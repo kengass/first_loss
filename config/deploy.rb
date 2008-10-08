@@ -1,17 +1,22 @@
 set :application, "f_loss"
-set :deploy_to, "/var/www/vhosts/amffunds.com/subdomains/docs/httpdocs/apps/#{application}"
+set :repository,  "."
 
-default_run_options[:pty] = true
-set :repository,  "git://github.com/kengass/first_loss.git" 
-set :scm, "git" 
-set :branch, "master" 
-set :deploy_via, :remote_cache
+# If you aren't deploying to /u/apps/#{application} on the target
+# servers (which is the default), you can specify the actual location
+# via the :deploy_to variable:
+set :deploy_to, "/var/www/vhosts/amffunds.com/subdomains/docs/apps/#{application}"
 
+# If you aren't using Subversion to manage your source code, specify
+# your SCM below:
+default_run_options[:pty] = true 
 set :use_sudo, false
 set :user, 'asarx123'
 set :admin_runner, 'root'
 
-#set :copy_remote_dir, "/var/tmp"
+set :scm, :git
+set :deploy_via, :copy
+
+set :copy_remote_dir, "/var/tmp"
 
 role :app, "docs.amffunds.com"
 role :web, "docs.amffunds.com"

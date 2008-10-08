@@ -7,7 +7,7 @@ set :scm, "git"
 set :branch, "master" 
 set :deploy_via, :remote_cache
 
-#set :use_sudo, false
+set :use_sudo, false
 set :user, 'asarx123'
 set :admin_runner, 'root'
 

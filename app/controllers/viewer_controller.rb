@@ -36,19 +36,19 @@ def index
         
          #build F_loss dates
         if fldates = Fldate.find(:all, :conditions=> ["security_id = ?",l.id],:order =>"severity, cdr")
-        sev=[]
+        @sev=[]
         cdr=[]
         rdata ={}    
         #get unique 
        fldates.each do |d|
-          sev << d.severity
+          @sev << d.severity
           cdr << d.cdr
         end
-       res['sev']= sev.uniq!
-       res['cdr']= cdr.uniq!
+       res['sev']= @sev.uniq
+       res['cdr']= cdr.uniq
       #BUILD TABLE
           set={}       
-        sev.each do |se|
+        @sev.each do |se|
           cdr.each do |cd|
             if record = Fldate.find_by_security_id_and_cdr_and_severity(l.id,cd,se)
               set[cd]=record.f_loss

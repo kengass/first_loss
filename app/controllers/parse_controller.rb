@@ -81,7 +81,7 @@ class ParseController < ApplicationController
           @fldate = Fldate.new
           #get security  before loop        
           if 2.upto(@parsed_file.last_row) do |line|
-           1.upto(@parsed_file.last_column) do |ce|
+           1.upto(10) do |ce|
             label  = @parsed_file.cell(line,ce)
             value = @parsed_file.cell(line,ce+1) 
 

@@ -6,7 +6,7 @@
   <li><a class="MenuBarItemSubmenu" href="#">Select by Security Title</a>
       <ul>
        <% @titles.each do |t| %>
-        <li><a href="?id=<%=t.id%>"><%=t.title%></a></li>
+        <li><a href="?ids=<%=t.id%>"><%=t.title%></a></li>
         <%end%>
       </ul>
   </li>
@@ -62,6 +62,7 @@ var MenuBar1 = new Spry.Widget.MenuBar("MenuBar1", {imgDown:"SpryAssets/SpryMenu
     <%=link_to "Click here for the August 2008 remittance reports for full details of credit performance
     ", "http://www.amffunds.com/html/remittance.php"%>
     <% c=0%>
+
     <table class="floss" cellpadding="0" cellspacing="0">
       <h3>Date of First Loss</h3> 
       <tr class="gray"><th class="corner" colspan="2" rowspan="2"></th><th class="hlabel top" colspan="<%=res['cdr'].size %>">CDR</th></tr>

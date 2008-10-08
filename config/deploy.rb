@@ -1,5 +1,5 @@
 set :application, "f_loss"
-set :deploy_to, "/var/www/vhosts/amffunds.com/subdomains/docs/apps/#{application}"
+set :deploy_to, "/var/www/vhosts/amffunds.com/subdomains/docs/httpdocs/apps/#{application}"
 
 default_run_options[:pty] = true
 set :repository,  "git://github.com/kengass/first_loss.git" 

@@ -19,7 +19,7 @@ class ParseController < ApplicationController
   
 
   def index
-    @dir = "public/intex"
+    @dir = "public/intex/"
     @funds = {'asarx'=>'Ultra Short Mortgage Fund','aultx'=>'Ultra Short Fund','ascpx'=>'Intermediate Mortgage Fund','asitx'=>'Short U.S. Government Fund','asmtx'=>'U.S. Government Mortgage Fund',}
     @list = {}
     @exist = []
@@ -28,7 +28,7 @@ class ParseController < ApplicationController
     #get directories    
     @funds.each do |key,value|
       #if value[-3]=="xls"
-        @list[key]= list_files("#{@dir}/#{key}")
+        @list[key]= list_files("#{@dir}#{key}")
         @list[key].each do |v|
 
           if Security.find(:first, :conditions => "filename = '#{v.chomp(".xls").chop}'") 
@@ -70,12 +70,13 @@ class ParseController < ApplicationController
           #set switched and counters
           stat_switch = 'on' #switch for laoding characteristics
           date_switch = 'off'#switch for loading first_loss dates
+          f_loss_switch = 'off'#switch for loading first_loss dates
+          
           
           #reset variables
           writecol =''
           datecol = ''
           @parsed_file.default_sheet = wbook
-          @wbtest<<wbook
           #load results
 
           @fldate = Fldate.new
@@ -118,13 +119,13 @@ class ParseController < ApplicationController
                end#securities loader (if first sheet)
                
               #===================================================== switcheroo              
-              if label== "Cashflows"
+              if label== "Assumptions"
                    stat_switch = "off"
-                  # f_loss_switch = "on" 
+                   f_loss_switch = "on" 
               end
               
               #===================================================== get the cdr & severity
-              #if f_loss_switch == 'on' 
+              if f_loss_switch == 'on' 
                case label       
                 when "Default Rate"
                    @fldate.cdr = value.gsub(' cdr','')
@@ -143,7 +144,6 @@ class ParseController < ApplicationController
                    # f_loss_switch = 'off'#you are done with everyting but dates so why look
                   end
                end#case label
-            #  end#if date switch = "on"
 
               #===================================================== date switch                              
               #now the line has to be in the date array and the column needs to be the writedown column
@@ -152,8 +152,9 @@ class ParseController < ApplicationController
                   @fldate.f_loss = @parsed_file.cell(line,datecol)
                   date_switch = 'off'#if a first loss date is displayed quit
                 end#if                
-              end
-              
+              end#if date switch = "on"
+            end#if floss switch = "on"
+           
             end #column each do
           end#line do
           else
@@ -177,7 +178,7 @@ class ParseController < ApplicationController
        r.security_id = @ex.id
           r.save
           
-          #archive(flname,fnd)
+          archive(flname,fnd)
           
       end  #do
     else @security.save
@@ -185,7 +186,7 @@ class ParseController < ApplicationController
         r.security_id = @security.id
           r.save
           
-          #archive(flname,fnd)
+          archive(flname,fnd)
           
           id_list << @security.id#load the list for display       
        end#results each do
@@ -193,10 +194,10 @@ class ParseController < ApplicationController
       redirect_to "?ids=#{id_list.join(',')}"
   end#index
   
- # def archive(flname2,fnd2) 
-  #   ofile = "public/intex/" + fnd2 + "/" + flname2
-   #  nfile = "public/intex/archive/" + fnd2 + "/" + flname2
-    # FileUtils.mv ofile, nfile
+def archive(flname2,fnd2) 
+   ofile = "public/intex/" + fnd2 + "/" + flname2
+   nfile = "public/intex/archive/" + fnd2 + "/" + flname2
+   FileUtils.mv ofile, nfile
        
- # end  
+end  
 end

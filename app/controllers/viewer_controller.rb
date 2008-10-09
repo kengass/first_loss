@@ -24,7 +24,8 @@ def index
         @pagetitle = "<h3>Report for security #{@list[0].cusip} as of #{@list[0].date}</h3>"      
           flash[:notice] = 'Specified security does not exist.'     
        else
-         @list<<"WTF?"
+          flash[:notice] = 'Specified security does not exist.'     
+
        end
     end 
     end#params each do ke
